@@ -1,0 +1,610 @@
+/* =========================================
+   1. БАЗОВЫЕ СТИЛИ И ФУТЕР (Прилипающий)
+   ========================================= */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #ffeff7; /* Пастельно-розовый фон */
+    color: #1a1a1a;
+    line-height: 1.6;
+    
+    /* Для прилипающего футера */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1 0 auto; /* Растягивает контент, прижимая футер вниз */
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+}
+
+footer {
+    flex-shrink: 0;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    margin-top: auto;
+}
+
+/* =========================================
+   2. ССЫЛКИ
+   ========================================= */
+a {
+    text-decoration: none;
+    color: #1a1a1a;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #ff9eb5;
+}
+
+/* =========================================
+   3. ШАПКА (HEADER)
+   ========================================= */
+header {
+    background: #1a1a1a;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    margin-bottom: 40px;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.logo:hover {
+    color: #ffd1dc;
+}
+
+/* Меню */
+.desktop-nav {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.desktop-nav a {
+    color: #ccc;
+    font-weight: 500;
+    padding: 8px 0;
+    position: relative;
+}
+
+.desktop-nav a:hover {
+    color: #fff;
+}
+
+.desktop-nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #ffd1dc;
+    transition: width 0.3s;
+}
+
+.desktop-nav a:hover::after {
+    width: 100%;
+}
+
+/* Панель пользователя */
+.user-panel {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 14px;
+}
+
+.user-panel span {
+    color: #fff;
+}
+
+.user-panel a {
+    color: #fff;
+}
+
+.btn-cabinet {
+    background: #ffd1dc !important;
+    color: #1a1a1a !important;
+    padding: 8px 18px !important;
+    border-radius: 50px !important;
+    font-weight: bold !important;
+    border: 2px solid #ffd1dc !important;
+}
+
+.btn-cabinet:hover {
+    background: transparent !important;
+    color: #ffd1dc !important;
+}
+
+.btn-logout {
+    color: #888 !important;
+    border-bottom: 1px dashed #888;
+}
+
+.btn-logout:hover {
+    color: #ff9eb5 !important;
+    border-bottom-color: #ff9eb5;
+}
+
+/* Мобильное меню (скрыто на ПК) */
+.mobile-nav {
+    display: none !important;
+    background: #2a2a2a;
+    padding: 20px;
+    text-align: center;
+}
+
+.mobile-nav.active {
+    display: block !important;
+}
+
+.mobile-nav a {
+    display: block;
+    color: #fff;
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* =========================================
+   4. ЗАГОЛОВКИ
+   ========================================= */
+h2 {
+    color: #1a1a1a;
+    border-left: 6px solid #1a1a1a;
+    padding-left: 15px;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+h3 {
+    color: #333;
+    border-bottom: 2px solid #ffd1dc;
+    padding-bottom: 10px;
+    margin-top: 40px;
+}
+
+/* =========================================
+   5. КАРТОЧКИ И КАРТИНКИ
+   ========================================= */
+.cat-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    transition: transform 0.2s;
+}
+
+.cat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+/* Стили для картинок котов */
+.cat-card img {
+    width: 100%;
+    max-width: 400px; /* Ограничение ширины */
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    display: block; /* Чтобы не было отступа снизу */
+}
+
+/* =========================================
+   6. КНОПКИ
+   ========================================= */
+.btn {
+    display: inline-block;
+    background: #1a1a1a;
+    color: #fff !important;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.btn:hover {
+    background: #ffd1dc;
+    color: #1a1a1a !important;
+}
+
+.btn-primary {
+    background: #ffd1dc;
+    color: #1a1a1a !important;
+}
+
+.btn-primary:hover {
+    background: #ff9eb5;
+}
+
+.btn-danger {
+    background: #333;
+    color: #ff9eb5 !important;
+    border: 1px solid #ff9eb5;
+}
+
+.btn-danger:hover {
+    background: #ff9eb5;
+    color: #fff !important;
+}
+
+/* =========================================
+   7. ФОРМЫ
+   ========================================= */
+form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    border-top: 4px solid #1a1a1a;
+    max-width: 500px;
+}
+
+form input, 
+form textarea, 
+form select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 16px;
+    background: #fafafa;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    border-color: #1a1a1a;
+    outline: none;
+    background: #fff;
+}
+
+form button {
+    width: 100%;
+    padding: 14px;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+form button:hover {
+    background: #ffd1dc;
+    color: #1a1a1a;
+}
+
+/* =========================================
+   8. КОММЕНТАРИИ
+   ========================================= */
+.comment {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid #ffd1dc;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.comment strong {
+    color: #1a1a1a;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.comment small {
+    color: #999;
+}
+
+/* =========================================
+   9. СТАТЬИ
+   ========================================= */
+.articles-list {
+    display: grid;
+    gap: 20px;
+}
+
+.article-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    border-left: 4px solid #1a1a1a;
+}
+
+.article-card h3 {
+    margin: 0 0 10px;
+    font-size: 20px;
+}
+
+.article-card h3 a {
+    color: #1a1a1a;
+}
+
+.article-card h3 a:hover {
+    color: #ff69b4;
+}
+
+.article-excerpt {
+    color: #666;
+    line-height: 1.5;
+    margin: 10px 0 15px;
+}
+
+.article-meta {
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.article-full {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+}
+
+.article-full h2 {
+    margin-top: 0;
+    border-left: 5px solid #1a1a1a;
+    padding-left: 15px;
+}
+
+.article-content {
+    line-height: 1.8;
+    color: #333;
+    margin: 25px 0;
+    white-space: pre-wrap;
+}
+
+/* =========================================
+   10. СТАТИСТИКА (САЙДБАР)
+   ========================================= */
+.statistics-sidebar {
+    margin-top: 40px;
+    display: grid;
+    gap: 25px;
+}
+
+.stat-block {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    border: 2px solid #1a1a1a;
+}
+
+.stat-block h3 {
+    margin: 0 0 20px;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #ffd1dc;
+    padding-bottom: 10px;
+}
+
+.names-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.names-column h4 {
+    margin: 0 0 15px;
+    font-size: 16px;
+    color: #1a1a1a;
+}
+
+.name-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.name-item:last-child {
+    border-bottom: none;
+}
+
+.name-text {
+    font-weight: 500;
+    color: #333;
+}
+
+.name-count {
+    background: #ffd1dc;
+    color: #1a1a1a;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 14px;
+    min-width: 30px;
+    text-align: center;
+}
+
+.breeds-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.breed-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.breed-item:hover {
+    background: #fff0f5;
+}
+
+.breed-icon {
+    font-size: 32px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 50%;
+    border: 2px solid #ffd1dc;
+}
+
+.breed-info {
+    flex: 1;
+}
+
+.breed-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.breed-count {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 14px;
+    min-width: 40px;
+    text-align: center;
+}
+
+/* =========================================
+   11. СТРАНИЦА КОТОВ (LAYOUT)
+   ========================================= */
+.cats-page-wrapper {
+    display: flex;
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.cats-main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.cats-sidebar {
+    width: 350px;
+    flex-shrink: 0;
+    /* Сайдбар прилипает при скролле */
+    position: sticky;
+    top: 100px;
+    align-self: flex-start; 
+}
+
+/* =========================================
+   12. АДАПТИВНОСТЬ (MOBILE)
+   ========================================= */
+@media (max-width: 1024px) {
+    .cats-page-wrapper {
+        flex-direction: column;
+    }
+    
+    .cats-sidebar {
+        width: 100%;
+        position: static; /* Убираем липкость на планшетах */
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .desktop-nav {
+        display: none; /* Скрываем меню ПК */
+    }
+    
+    .mobile-menu-btn {
+        display: block; /* Показываем гамбургер */
+    }
+    
+    .user-panel {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .names-columns {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .breed-item {
+        padding: 10px;
+    }
+    
+    .breed-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
+    }
+    
+    .cat-card img {
+        max-width: 100%; /* На мобильных фото на всю ширину */
+    }
+}

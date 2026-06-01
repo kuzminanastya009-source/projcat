@@ -19,6 +19,7 @@ class MainController
         ]);
     }
 
+    // Оставляем ТОЛЬКО ОДИН метод sayBye
     public function sayBye(string $name)
     {
         View::render('main/bye.php', [

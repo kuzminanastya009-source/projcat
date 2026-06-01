@@ -36,6 +36,9 @@ $routes = [
     '~^article/(\d+)/edit$~' => [\Src\Controllers\ArticleController::class, 'edit'],
     
     '~^cabinet$~' => [\Src\Controllers\UserController::class, 'cabinet'],
+    '~^favorites$~' => [\Src\Controllers\CatController::class, 'favorites'],
+'~^hello/([a-zA-Zа-яА-Я0-9]+)$~' => [\Src\Controllers\MainController::class, 'hello'],
+'~^bye/([a-zA-Zа-яА-Я0-9]+)$~' => [\Src\Controllers\MainController::class, 'sayBye'],
 ];
 
 $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');

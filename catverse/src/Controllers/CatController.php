@@ -72,7 +72,7 @@ class CatController
 
             $photo = null;
             if (!empty($_FILES['photo']['name'])) {
-                $uploadDir = __DIR__ . '/../../uploads/cats/';
+                $uploadDir = __DIR__ . '/../../public/uploads/cats/';
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
@@ -116,7 +116,7 @@ class CatController
 
             $photo = null;
             if (!empty($_FILES['photo']['name'])) {
-                $uploadDir = __DIR__ . '/../../uploads/cats/';
+                $uploadDir = __DIR__ . '/../../public/uploads/cats/';
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
@@ -177,19 +177,49 @@ class CatController
         ]);
     }
 
-    public function favorite(int $id)
-    {
-        $this->ensureAuth();
-        Cat::toggleFavorite($id);
-        header("Location: /cat/$id");
-        exit;
-    }
-
     public function like(int $id)
     {
-        $this->ensureAuth();
-        Cat::like($id);
-        header("Location: /cat/$id");
+        // Проверка авторизации
+        if (empty($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        $userId = $_SESSION['user']['id'];
+        $catId = $id;
+
+        $db = \Src\Services\Db::getConnection();
+
+        // Проверяем, лайкал ли уже этот пользователь
+        $stmt = $db->prepare("SELECT id FROM cat_likes WHERE user_id = ? AND cat_id = ?");
+        $stmt->execute([$userId, $catId]);
+        $existingLike = $stmt->fetch(\PDO::FETCH_OBJ);
+
+        if ($existingLike) {
+            // Если уже лайкал — убираем лайк (toggle)
+            $stmt = $db->prepare("DELETE FROM cat_likes WHERE user_id = ? AND cat_id = ?");
+            $stmt->execute([$userId, $catId]);
+            
+            // Уменьшаем счетчик лайков
+            $stmt = $db->prepare("UPDATE cats SET likes = likes - 1 WHERE id = ? AND likes > 0");
+            $stmt->execute([$catId]);
+        } else {
+            // Если не лайкал — добавляем лайк
+            try {
+                $stmt = $db->prepare("INSERT INTO cat_likes (user_id, cat_id) VALUES (?, ?)");
+                $stmt->execute([$userId, $catId]);
+                
+                // Увеличиваем счетчик лайков
+                $stmt = $db->prepare("UPDATE cats SET likes = likes + 1 WHERE id = ?");
+                $stmt->execute([$catId]);
+            } catch (\PDOException $e) {
+                // Если ошибка UNIQUE constraint — значит уже лайкнул
+                // Просто игнорируем
+            }
+        }
+
+        // Возвращаемся на страницу кота
+        header("Location: /cat/$catId");
         exit;
     }
 
@@ -214,5 +244,64 @@ class CatController
             header('Location: /login');
             exit;
         }
+    }
+
+    // ЕДИНСТВЕННЫЙ метод favorite (улучшенный)
+    public function favorite(int $id)
+    {
+        $this->ensureAuth();
+        Cat::toggleFavorite($id);
+        
+        // Проверяем, откуда пришел пользователь
+        $referer = $_SERVER['HTTP_REFERER'] ?? '/cats';
+        
+        // Извлекаем путь из URL
+        $parsedUrl = parse_url($referer, PHP_URL_PATH);
+        
+        // Разрешенные страницы для возврата
+        $allowedPages = ['/cats', '/favorites', '/articles'];
+        
+        // Проверяем, является ли страница разрешенной
+        $isValidRedirect = false;
+        foreach ($allowedPages as $page) {
+            if (strpos($parsedUrl, $page) === 0) {
+                $isValidRedirect = true;
+                break;
+            }
+        }
+        
+        // Если страница разрешена - возвращаемся туда
+        if ($isValidRedirect) {
+            header("Location: $referer");
+        } else {
+            // Иначе перенаправляем на страницу кота
+            header("Location: /cat/$id");
+        }
+        exit;
+    }
+    
+    public function favorites()
+    {
+        // Проверка авторизации
+        if (empty($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        // Получаем всех котов, которые в избранном (favorite = 1)
+        $db = \Src\Services\Db::getConnection();
+        $stmt = $db->prepare("
+            SELECT c.* 
+            FROM cats c
+            WHERE c.favorite = 1
+            ORDER BY c.id DESC
+        ");
+        $stmt->execute();
+        $cats = $stmt->fetchAll(\PDO::FETCH_OBJ);
+
+        \Src\View\View::render('cats/favorites.php', [
+            'cats' => $cats,
+            'title' => 'Избранные коты'
+        ]);
     }
 }

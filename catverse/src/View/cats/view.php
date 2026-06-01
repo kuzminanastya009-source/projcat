@@ -32,3 +32,12 @@ use Src\Models\Comment;
     <textarea name="text" placeholder="Комментарий..." required></textarea>
     <button class="btn">Отправить</button>
 </form>
+<?php
+// Проверяем, лайкнул ли текущий пользователь
+$userLiked = false;
+if (!empty($_SESSION['user'])) {
+    $db = \Src\Services\Db::getConnection();
+    $stmt = $db->prepare("SELECT id FROM cat_likes WHERE user_id = ? AND cat_id = ?");
+    $stmt->execute([$_SESSION['user']['id'], $cat->id]);
+    $userLiked = $stmt->fetch(\PDO::FETCH_OBJ) !== false;
+}
